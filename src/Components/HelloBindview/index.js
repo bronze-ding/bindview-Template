@@ -88,7 +88,7 @@ export default function (bv) {
           bv.$h('span', { val: ' 打包', class: 'lv' }),
           bv.$h('br'),
           bv.$h('p'),
-          bv.$h('span', { val: '    pm run build ', class: 'keyword' }),
+          bv.$h('span', { val: '    npm run build ', class: 'keyword' }),
         ])),
       ]),
     ]),
