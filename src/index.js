@@ -1,5 +1,6 @@
-import Bindview from "bindview"
-
+// import Bindview from "bindview"
+import Bindview from "../../bindview/src"
+// console.log(require('../../bindview/dist/bindeview'));
 import root from './Components/Root'
 
 new Bindview({

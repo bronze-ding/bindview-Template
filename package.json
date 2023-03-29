@@ -29,6 +29,6 @@
     "webpack-dev-server": "^4.9.3"
   },
   "dependencies": {
-    "bindview": "^1.1.3"
+    "bindview": "^1.1.6"
   }
 }
