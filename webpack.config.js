@@ -16,8 +16,11 @@ module.exports = {
   },
   resolve: {
     alias: {
-      utils: path.resolve(__dirname, "src/utils")
+      utils: path.resolve(__dirname, "src/utils"),
+      '@': path.join(__dirname, './src'),
+      //表示设置路径别名这样在import的文件在src下的时候可以直接 @/component/...
     },
+    extensions: ['.js', '.jsx', '.json'],	//表示在import 文件时文件后缀名可以不写
   },
   optimization: {
     minimize: true,
@@ -63,14 +66,18 @@ module.exports = {
         type: "asset/resource",
       },
       {
-        test: /\.js$/,
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)$/,
+        use: 'file-loader'
+      },
+      {
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
-            presets: ["@babel/preset-env"],
-          },
-        },
+            presets: ['@babel/preset-env', '@babel/preset-react'],
+          }
+        }
       },
       {
         test: /\.less$/,

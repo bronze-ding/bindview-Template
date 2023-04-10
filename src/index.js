@@ -6,10 +6,11 @@ import HelloBindView from "./Components/HelloBindView";
 new Bindview({
   el: '#App',
   node(h) {
-    return h('div', { class: 'root' }, [
-      // 使用 template 标签来作为组件容器
-      h('template', { module: ['HelloBindView', () => h.version] })
-    ])
+    return (
+      <div class="root">
+        <template module={['HelloBindView', () => h.version]}></template>
+      </div>
+    )
   },
   data: {
     // 版本信息
