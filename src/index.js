@@ -8,7 +8,7 @@ new Bindview({
   node(h) {
     return (
       <div class="root">
-        <template module={['HelloBindView', () => h.version]}></template>
+        <HelloBindView prop={() => h.version} />
       </div>
     )
   },
@@ -16,7 +16,6 @@ new Bindview({
     // 版本信息
     version: Bindview.version
   },
-  methods: {},
   life: {
     createDom() {
       console.log(this);

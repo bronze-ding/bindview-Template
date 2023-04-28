@@ -1,7 +1,6 @@
 import style from "./index.less"
-export default function (el, version) {
+export default function (version) {
   return {
-    el,
     node() {
       // 为了解决组件间样式的污染,bindview-Temolate在webpack.config.js中使用了css-module,在配合less预处理器
       return (
