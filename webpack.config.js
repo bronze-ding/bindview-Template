@@ -9,7 +9,7 @@ const DefinePlugin = require("webpack").DefinePlugin
 module.exports = {
   mode: "development",
   devtool: "inline-source-map",
-  entry: "./src/index.js",
+  entry: "./src/main.js",
   output: {
     filename: "./dist.js",
     path: path.resolve(__dirname, "dist"),
