@@ -1,4 +1,5 @@
 .head {
+  padding-top: 20px;
   h2,
   p {
     text-align: center;
@@ -9,6 +10,35 @@
     }
     a:hover {
       color: rgb(40, 121, 242);
+    }
+  }
+  p {
+    margin-top: 40px;
+  }
+
+  img {
+    -webkit-animation: rotateImg 4s linear infinite;
+    display: block;
+    width: 400px;
+    margin: 100px auto;
+    vertical-align: middle;
+  }
+
+  @keyframes rotateImg {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @-webkit-keyframes rotateImg {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
     }
   }
 }

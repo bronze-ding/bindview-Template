@@ -1,10 +1,17 @@
+@font-face {
+  font-family: "CascadiaCode";
+  src: url("./assets/CascadiaCode.ttf");
+}
+
 * {
   margin: 0;
   padding: 0;
+  font-family: "CascadiaCode";
 }
 
 #App {
   width: 100vw;
   height: 100vh;
-  background: url('./assets/code.jpg') no-repeat center center;
+  background-color: #282c34;
+  /* background: url('./assets/code.jpg') no-repeat center center; */
 }

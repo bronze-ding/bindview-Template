@@ -9,7 +9,9 @@ export default function () {
           <p>
             <a href="https://github.com/debfig/bindview-core" target='_blank'>github</a>
             <span> | </span>
-            <a href="https://www.npmjs.com/package/bindview" target='_blank'>npm</a></p>
+            <a href="https://www.npmjs.com/package/bindview" target='_blank'>npm</a>
+          </p>
+          <img src={require('../../assets/logo.svg')} alt="logo" />
         </div>
       )
     }
