@@ -5,7 +5,7 @@ export default function () {
     node() {
       return (
         <div class={style['head']}>
-          <h2>Welcome to BindView.js TempLate</h2>
+          <h2>Welcome to Bindview.js TempLate</h2>
           <p>
             <a href="https://github.com/debfig/bindview-core" target='_blank'>github</a>
             <span> | </span>
