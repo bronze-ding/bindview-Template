@@ -1,6 +1,6 @@
 {
   "name": "bindview-template",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "一个基于bindview.js和webpack打包工具的开发模板环境",
   "main": "webpack.config.js",
   "scripts": {
