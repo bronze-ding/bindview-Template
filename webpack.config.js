@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin")
 const DefinePlugin = require("webpack").DefinePlugin
+const currentFolderName = path.basename(process.cwd());
 // const BundleAnalyzerPlugin =
 //   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
@@ -35,7 +36,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: "bindview.js",
+      title: currentFolderName,
       filename: 'index.html',
       template: './public/index.html'
     }),
