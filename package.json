@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack serve --open",
     "serve": "webpack-dev-server",
+    "history": "webpack-dev-server --history-api-fallback",
     "build": "webpack --mode production"
   },
   "keywords": [],

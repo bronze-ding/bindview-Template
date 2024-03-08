@@ -12,8 +12,9 @@ module.exports = {
   devtool: "inline-source-map",
   entry: "./src/main.js",
   output: {
-    filename: "./dist.js",
+    filename: "dist.js",
     path: path.resolve(__dirname, "dist"),
+    publicPath: '/' //new 
   },
   resolve: {
     alias: {
@@ -56,9 +57,8 @@ module.exports = {
       ],
     }),
     new DefinePlugin({
-      BASE_URL: "'./'", // 两层引号
+      BASE_URL: "'/'", // 两层引号
     }),
-    // new BundleAnalyzerPlugin(),
   ],
   module: {
     rules: [
