@@ -5,6 +5,6 @@ import App from "./App"
 
 new Bindview({
   el: '#Root',
-  node: () => (<App />),
-  module: { App }
+  render: () => (<App />),
+  components: { App }
 })

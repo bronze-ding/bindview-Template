@@ -1,9 +1,9 @@
 import "./App.css"
 import HelloBindview from "./Components/HelloBindview"
-export default function () {
+export default function App() {
   return {
     name: 'App',
-    node() {
+    render() {
       return (
         <div id="App">
           <HelloBindview />
@@ -11,10 +11,10 @@ export default function () {
       )
     },
     life: {
-      createDom() {
+      created() {
         console.log(this);
       }
     },
-    module: { HelloBindview }
+    components: { HelloBindview }
   }
 }
