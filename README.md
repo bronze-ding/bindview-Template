@@ -14,6 +14,10 @@
    ```
    npm run serve
    ```
+## history 路由模式运行
+   ```
+   npm run history
+   ```
 ## 打包
    ```
    npm run build
