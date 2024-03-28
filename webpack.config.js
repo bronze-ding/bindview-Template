@@ -3,18 +3,22 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin")
 const DefinePlugin = require("webpack").DefinePlugin
+const ProvidePlugin = require("webpack").ProvidePlugin
 const currentFolderName = path.basename(process.cwd());
-// const BundleAnalyzerPlugin =
-//   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   mode: "development",
   devtool: "inline-source-map",
-  entry: "./src/main.js",
+  entry: {
+    components: './src/App.jsx', // 单独的JSX入口点
+    main: "./src/main.js",
+  },
   output: {
-    filename: "dist.js",
+    filename: "js/[contenthash].dist.js",
     path: path.resolve(__dirname, "dist"),
-    publicPath: '/' //new 
+    clean: true,
+    publicPath: '/'
   },
   resolve: {
     alias: {
@@ -22,7 +26,7 @@ module.exports = {
       '@': path.join(__dirname, './src'),
       //表示设置路径别名这样在import的文件在src下的时候可以直接 @/component/...
     },
-    extensions: ['.js', '.jsx', '.json'],	//表示在import 文件时文件后缀名可以不写
+    extensions: ['.js', '.jsx', '.json'], //表示在import 文件时文件后缀名可以不写
   },
   optimization: {
     minimize: true,
@@ -59,20 +63,30 @@ module.exports = {
     new DefinePlugin({
       BASE_URL: "'/'", // 两层引号
     }),
+    new MiniCssExtractPlugin({
+      filename: 'css/[contenthash].css', // CSS文件名  
+      chunkFilename: 'css/[contenthash].css', // 导入的CSS文件名  
+    }),
   ],
   module: {
     rules: [
       {
         test: /\.css$/i,
-        use: ["style-loader", "css-loader"],
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif|ico)$/i,
         type: "asset/resource",
+        generator: {
+          filename: 'images/[hash][ext][query]' // 图片文件打包到 images 目录下
+        }
       },
       {
         test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)$/,
-        use: 'file-loader'
+        use: 'file-loader',
+        generator: {
+          filename: 'video/[hash][ext][query]' // 字体文件打包到 fonts 目录下
+        }
       },
       {
         test: /\.(js|jsx)$/,
@@ -87,7 +101,7 @@ module.exports = {
       {
         test: /\.less$/,
         use: [
-          'style-loader',
+          MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
             options: {
