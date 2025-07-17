@@ -3,13 +3,14 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin")
 const DefinePlugin = require("webpack").DefinePlugin
-const ProvidePlugin = require("webpack").ProvidePlugin
 const currentFolderName = path.basename(process.cwd());
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const FriendlyErrorsWebpackPlugin = require('@soda/friendly-errors-webpack-plugin');
 
 module.exports = {
   mode: "development",
   devtool: "inline-source-map",
+  stats: 'errors-only',
   entry: {
     components: './src/App.jsx', // 单独的JSX入口点
     main: "./src/main.js",
@@ -38,6 +39,12 @@ module.exports = {
   },
   devServer: {
     static: "./dist",
+    client: {
+      overlay: {
+        errors: false,
+        warnings: false,
+      },
+    },
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -62,10 +69,24 @@ module.exports = {
     }),
     new DefinePlugin({
       BASE_URL: "'/'", // 两层引号
+      'process.env.NODE_ENV': JSON.stringify('development')
     }),
     new MiniCssExtractPlugin({
       filename: 'css/[contenthash].css', // CSS文件名  
       chunkFilename: 'css/[contenthash].css', // 导入的CSS文件名  
+    }),
+    new FriendlyErrorsWebpackPlugin({
+      compilationSuccessInfo: {
+        messages: ['您的应用程序正在此处运行 http://localhost:8080'],
+        notes: ['使用 npm run build 创建生产版本']
+      },
+      onErrors: function (severity, errors) {
+        if (severity !== 'error') return;
+
+        const tidyErrors = errors.map(err => err.message.replace(__dirname, ''));
+        console.log(tidyErrors)
+      },
+      clearConsole: true,
     }),
   ],
   module: {
