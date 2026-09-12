@@ -1,90 +1,119 @@
 const path = require("path");
+const os = require("os");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
-const CopyPlugin = require("copy-webpack-plugin")
-const DefinePlugin = require("webpack").DefinePlugin
+const CopyPlugin = require("copy-webpack-plugin");
+const DefinePlugin = require("webpack").DefinePlugin;
 const currentFolderName = path.basename(process.cwd());
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const FriendlyErrorsWebpackPlugin = require('@soda/friendly-errors-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const FriendlyErrorsWebpackPlugin = require("@soda/friendly-errors-webpack-plugin");
+
+// ✅ 获取本机局域网 IPv4 地址
+function getLocalIp() {
+  const interfaces = os.networkInterfaces();
+  for (const name of Object.keys(interfaces)) {
+    for (const iface of interfaces[name]) {
+      if (iface.family === "IPv4" && !iface.internal) {
+        return iface.address;
+      }
+    }
+  }
+  return "localhost";
+}
+
+const HOST = "0.0.0.0"; // 监听所有网卡，方便局域网访问
+const LOCAL_IP = getLocalIp();
 
 module.exports = {
   mode: "development",
   devtool: "inline-source-map",
-  stats: 'errors-only',
+  stats: "errors-only",
   entry: {
-    components: './src/App.jsx', // 单独的JSX入口点
+    components: "./src/App.jsx",
     main: "./src/main.js",
   },
   output: {
     filename: "js/[contenthash].dist.js",
     path: path.resolve(__dirname, "dist"),
     clean: true,
-    publicPath: '/'
+    publicPath: "/",
   },
   resolve: {
     alias: {
       utils: path.resolve(__dirname, "src/utils"),
-      '@': path.join(__dirname, './src'),
-      //表示设置路径别名这样在import的文件在src下的时候可以直接 @/component/...
+      "@": path.join(__dirname, "./src"),
     },
-    extensions: ['.js', '.jsx', '.json'], //表示在import 文件时文件后缀名可以不写
+    extensions: [".js", ".jsx", ".json"],
   },
   optimization: {
     minimize: true,
-    minimizer: [new TerserPlugin({
-      terserOptions: {
-        keep_fnames: true,
-      },
-    })],
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          keep_fnames: true,
+        },
+      }),
+    ],
   },
   devServer: {
     static: "./dist",
+    host: HOST,
+    port: "auto", // ✅ 交给 webpack-dev-server 自动寻找可用端口
+    open: false,
+    allowedHosts: "all",
     client: {
       overlay: {
         errors: false,
         warnings: false,
       },
     },
+    // ✅ 关键：启动完成后，webpack-dev-server 会回调这里，能拿到真实端口
+    onListening(devServer) {
+      const { port } = devServer.server.address();
+      console.log("");
+      console.log("  您的应用程序正在此处运行:");
+      console.log(`    - Local:   http://localhost:${port}`);
+      console.log(`    - Network: http://${LOCAL_IP}:${port}`);
+      console.log("");
+    },
   },
   plugins: [
     new HtmlWebpackPlugin({
       title: currentFolderName,
-      filename: 'index.html',
-      template: './public/index.html'
+      filename: "index.html",
+      template: "./public/index.html",
     }),
     new CopyPlugin({
       patterns: [
         {
-          from: "public", // 复制入口
-          to: "./", // 复制到 build，再写路径就是新建一个新的文件夹，./ 默认为 build
+          from: "public",
+          to: "./",
           globOptions: {
-            ignore: [
-              //不想被复制的文件，
-              //比如：**/index.html
-              "**/index.html"
-            ]
-          }
+            ignore: ["**/index.html"],
+          },
         },
       ],
     }),
     new DefinePlugin({
-      BASE_URL: "'/'", // 两层引号
-      'process.env.NODE_ENV': JSON.stringify('development')
+      BASE_URL: "'/'",
+      "process.env.NODE_ENV": JSON.stringify("development"),
     }),
     new MiniCssExtractPlugin({
-      filename: 'css/[contenthash].css', // CSS文件名  
-      chunkFilename: 'css/[contenthash].css', // 导入的CSS文件名  
+      filename: "css/[contenthash].css",
+      chunkFilename: "css/[contenthash].css",
     }),
     new FriendlyErrorsWebpackPlugin({
+      // ✅ 不再拼 localhost / network 地址（端口是 auto，拼不准）
       compilationSuccessInfo: {
-        messages: ['您的应用程序正在此处运行 http://localhost:8080'],
-        notes: ['使用 npm run build 创建生产版本']
+        messages: [`应用 ${currentFolderName} 编译成功`],
+        notes: ["使用 npm run serve 启动开发服务器", "使用 npm run build 创建生产版本"],
       },
       onErrors: function (severity, errors) {
-        if (severity !== 'error') return;
-
-        const tidyErrors = errors.map(err => err.message.replace(__dirname, ''));
-        console.log(tidyErrors)
+        if (severity !== "error") return;
+        const tidyErrors = errors.map((err) =>
+          err.message.replace(__dirname, "")
+        );
+        console.log(tidyErrors);
       },
       clearConsole: true,
     }),
@@ -99,43 +128,43 @@ module.exports = {
         test: /\.(png|svg|jpg|jpeg|gif|ico)$/i,
         type: "asset/resource",
         generator: {
-          filename: 'images/[hash][ext][query]' // 图片文件打包到 images 目录下
-        }
+          filename: "images/[hash][ext][query]",
+        },
       },
       {
         test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)$/,
-        use: 'file-loader',
+        use: "file-loader",
         generator: {
-          filename: 'video/[hash][ext][query]' // 字体文件打包到 fonts 目录下
-        }
+          filename: "video/[hash][ext][query]",
+        },
       },
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
+          loader: "babel-loader",
           options: {
-            presets: ['@babel/preset-env', '@babel/preset-react'],
-          }
-        }
+            presets: ["@babel/preset-env", "@babel/preset-react"],
+          },
+        },
       },
       {
         test: /\.less$/,
         use: [
           MiniCssExtractPlugin.loader,
           {
-            loader: 'css-loader',
+            loader: "css-loader",
             options: {
               importLoaders: 1,
               modules: {
-                auto: (resourcePath) => resourcePath.endsWith('.less'),  // 匹配.less文件来进行css模块化。
-                localIdentName: '[local]_[hash:base64:10]',
+                auto: (resourcePath) => resourcePath.endsWith(".less"),
+                localIdentName: "[local]_[hash:base64:10]",
               },
             },
           },
-          'less-loader'
-        ]
-      }
+          "less-loader",
+        ],
+      },
     ],
   },
 };

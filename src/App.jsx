@@ -1,20 +1,18 @@
 import "./App.css"
-import HelloBindview from "./Components/HelloBindview"
+import logo from "./assets/logo.png"
+import HelloWorld from "./Components/HelloWorld"
+
 export default function App() {
   return {
-    name: 'App',
+    name: "App",
     render() {
       return (
         <div id="App">
-          <HelloBindview />
+          <img class="logo" src={logo} alt="Bindview logo" />
+          <HelloWorld msg={() => "Welcome to Your Bindview.js App"} />
         </div>
       )
     },
-    life: {
-      created() {
-        console.log(this);
-      }
-    },
-    components: { HelloBindview }
+    components: { HelloWorld }
   }
 }
