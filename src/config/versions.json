@@ -1,0 +1,9 @@
+{
+  "fetchedAt": "2026-09-19T11:27:55.000Z",
+  "versions": {
+    "bindview": "3.2.1",
+    "bindview-router": "1.2.0",
+    "bindview-store": "1.0.0",
+    "bindview-component": "1.2.0"
+  }
+}

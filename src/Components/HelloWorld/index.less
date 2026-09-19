@@ -1,26 +1,49 @@
-.hello {
-  h1 {
-    font-size: 24px;
-    font-weight: 600;
-    margin: 24px 0;
-  }
+// 在线演示组件样式（Less 模块：类名会被哈希隔离，不污染全局）
+// 与展示页保持同一套简约风格：细边框、浅色、单一强调色
+.demo {
+  padding: 22px;
+  background: #fff;
+  border: 1px solid #e6e8eb;
+  border-radius: 8px;
+}
 
-  h3 {
-    font-size: 16px;
-    margin: 40px 0 0;
-  }
+.count {
+  font-size: 44px;
+  font-weight: 600;
+  line-height: 1.1;
+  color: #2f7ef7;
+  font-variant-numeric: tabular-nums;
+}
 
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
+.ops {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
 
-  li {
-    display: inline-block;
-    margin: 0 10px;
-  }
+.btn {
+  padding: 7px 14px;
+  font-size: 14px;
+  color: #3c4450;
+  background: #fff;
+  border: 1px solid #e6e8eb;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
 
-  a {
-    color: #409eff;
+  &:hover {
+    color: #2f7ef7;
+    border-color: #2f7ef7;
   }
+}
+
+.ghost {
+  color: #6b7280;
+}
+
+.log {
+  margin: 16px 0 0;
+  font-size: 13px;
+  color: #6b7280;
 }
